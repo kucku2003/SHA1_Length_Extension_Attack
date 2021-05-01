@@ -33,6 +33,7 @@ class Util():
         return result
 
     # ------------------------------------------------------
+    # Returns fixed bits-length l 
     def bitADD(self, x, y, l):
         max_len = max(len(x), len(y))
 
@@ -56,6 +57,7 @@ class Util():
         return resultFinal
 
     # ------------------------------------------------------
+    # Returns fixed bits-length l 
     def bitMINUS(self, x, y, l):
         max_len = max(len(x), len(y))
 
