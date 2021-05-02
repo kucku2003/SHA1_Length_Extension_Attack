@@ -3,40 +3,40 @@ from sha1_length_attack import SHA1_Length_Attack
 
 print('----------------------------------------')
 # Test data
-key = "python"
-text = "kucku2003@github"
-extendedText = "sha1_length_attack"
-print(f'key: "{key}"')
-print(f'text: "{text}"')
-print(f'extended text: "{extendedText}"')
+KEY = "python"
+TEXT = "kucku2003@github"
+EXTENDED_TEXT = "sha1_length_attack"
+print(f'KEY: "{KEY}"')
+print(f'TEXT: "{TEXT}"')
+print(f'EXTENDED_TEXT: "{EXTENDED_TEXT}"')
 
 print('----------------------------------------')
 # Calculate MAC using my own SHA1 implementation "SHA1" from sha1.py
 sha1 = SHA1()
-original_MAC = sha1.getHash(key, text)
-print(f'sha1.py MAC (key + text): {original_MAC}')
+original_MAC = sha1.getHash(KEY, TEXT)
+print(f'sha1.py MAC (KEY + TEXT): {original_MAC}')
 
 print('')
 print('----------------------------------------')
-print('Using text string and the original MAC value above to calculate new MAC and required added hex string')
-print('Length of key is unknown, but can be brute-forced')
-print('Assume, that we already know key length "len(key)"')
+print('Using original TEXT (without knowing KEY) and the original MAC value above to calculate new MAC and new TEXT used for the attack')
+print('Length of key is unknown, and has to be wourked out someway, mostly brute-forced')
+print('Assume, that we already know key length "len(KEY)"')
 print('----------------------------------------')
 # ----------------------------------------
 sha1_attack = SHA1_Length_Attack()
-addedHexString,new_MAC = sha1_attack.attackSHA1(text, original_MAC, extendedText, len(key) + len(text))
-print(f'added HEX string text: "{addedHexString}"')
+new_TEXT,new_MAC = sha1_attack.attackSHA1(TEXT, original_MAC, EXTENDED_TEXT, len(KEY) + len(TEXT))
+print(f'new TEXT: "{new_TEXT}"')
 print('----------------------------------------')
-print('new MAC: ' + new_MAC)
+print(f'new MAC: "{new_MAC}"')
 print('----------------------------------------')
 
 # Re-Calculate MAC using my own SHA1 implementation "SHA1" from sha1.py, 
-# (key + text + addedHexString + extendedText)
-recalculated_MAC = sha1.getHash(key, text + addedHexString + extendedText)
-print(f're-calculated MAC (key + text + addedHexString + extendedText): {recalculated_MAC}')
+# (KEY + new_TEXT)
+recalculated_MAC = sha1.getHash(KEY, new_TEXT)
+print(f're-calculated MAC (KEY + new_TEXT) for verification purpose: {recalculated_MAC}')
 
 print('----------------------------------------')
 if (recalculated_MAC == new_MAC):
-    print('recalculated_MAC is identical to new_MAC: SUCCESSFUL!')
+    print('re-calculated_MAC is identical to new_MAC: ATTACK SUCCESSFUL!')
 else:
-    print('new_MAC is NOT identical to recalculated_MAC: FAILED!')
+    print('new_MAC is NOT identical to recalculated_MAC: ATTACK FAILED!')

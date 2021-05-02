@@ -40,7 +40,7 @@ class SHA1_Length_Attack():
         for i in range(0,len(paddingAndLength),8):
             paddingAndLengthInHexStringFormat = paddingAndLengthInHexStringFormat + ('\\x' + '{:02x}'.format(int(paddingAndLength[i:i+8], 2)))
 
-        newMessage = paddingAndLengthInHexStringFormat
+        newMessage = originText + paddingAndLengthInHexStringFormat + appendText
         return [newMessage,newMac]
 
 
